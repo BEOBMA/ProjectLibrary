@@ -40,6 +40,18 @@ data class MainBookShelf(
             }
         }.runTaskLater(ProjectLibrary.instance, (this.disheveledTime * 20).toLong)
     }
+
+    fun death(player: Player) {
+        player.death()
+        player!!.scoreboardTags.add("isDeath")
+
+        player.gameMode = GameMode.SPECTATOR
+
+        //좌표 수정 필요
+        player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
+
+        GameManager().actEndChech()
+    }
 }
 
 
