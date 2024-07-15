@@ -33,7 +33,7 @@ data class Game(
                 "${ChatColor.BOLD}[!] 해당 플러그인과 맵, 리소스팩은 BEOBMA에 의해 개발되었으며 2차 창작물로 분류됩니다.",
                 "${ChatColor.BOLD}[!] 해당 플러그인에 대한 무단 수정, 배포 등을 금지합니다.",
                 "${ChatColor.BOLD}[!] 잠시 후 게임을 시작합니다."
-            )
+            ), 60L
         )
 
         object : BukkitRunnable() {
@@ -48,39 +48,44 @@ data class Game(
         ProjectLibrary.instance.server.scheduler.cancelTasks(ProjectLibrary.instance)
 
         game.players.forEach { player ->
-            player.inventory.clear()
-            player.stopAllSounds()
-            player.clearActivePotionEffects()
-            player.gameMode = GameMode.ADVENTURE
-            player.maxHealth = 20.0
-            player.health = 20.0
-            val tags = player.scoreboardTags.toList()
-            tags.forEach { tag ->
-                player.removeScoreboardTag(tag)
-            }
-            for ((_, team) in teams) {
-                team?.entries?.forEach { entry ->
-                    team.removeEntry(entry)
-                }
-            }
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players reset @a")
-
-            player.teleport(Location(player.world, 2.5, -60.0, 0.5, 90f, 0f))
+            resetPlayer(player)
         }
+
+        teams.forEach { (_, team) ->
+            team?.entries?.forEach { entry ->
+                team.removeEntry(entry)
+            }
+        }
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players reset @a")
 
         Info.game = null
         Info.starting = false
         Info.gaming = false
     }
 
+    private fun resetPlayer(player: Player) {
+        player.apply {
+            inventory.clear()
+            stopAllSounds()
+            clearActivePotionEffects()
+            gameMode = GameMode.ADVENTURE
+            maxHealth = 20.0
+            health = 20.0
+            scoreboardTags.toList().forEach { tag ->
+                removeScoreboardTag(tag)
+            }
+            teleport(Location(world, 2.5, -60.0, 0.5, 90f, 0f))
+        }
+    }
 
-    private fun broadcastDelayedMessages(messages: List<String>) {
+    private fun broadcastDelayedMessages(messages: List<String>, delay: Long) {
         messages.forEachIndexed { index, message ->
             object : BukkitRunnable() {
                 override fun run() {
                     Bukkit.broadcastMessage(message)
                 }
-            }.runTaskLater(ProjectLibrary.instance, 60L * (index + 1))
+            }.runTaskLater(ProjectLibrary.instance, delay * (index + 1))
         }
     }
 }
