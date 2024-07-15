@@ -8,7 +8,6 @@ import org.beobma.projectlibrary.abnormalstatus.AbnormalStatusManager
 import org.beobma.projectlibrary.bookshelf.Rating.*
 import org.beobma.projectlibrary.game.GameManager
 import org.beobma.projectlibrary.game.LibraryFloor.*
-import org.beobma.projectlibrary.game.LibraryFloor.Art
 import org.beobma.projectlibrary.info.Info
 import org.beobma.projectlibrary.util.Util.isTeam
 import org.bukkit.ChatColor
@@ -19,7 +18,6 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
-import org.bukkit.util.ChatPaginator.ChatPage
 
 data class MainBookShelf(
     val name: String,
@@ -36,117 +34,83 @@ data class MainBookShelf(
 ) {
 
     fun set(player: Player) {
-        Info.game!!.playerMainBookShelf[player] = this
-        player.maxHealth = this.maxHealth
-        player.health = this.health
-        player.inventory.clear()
-        player.activePotionEffects.forEach { effect ->
-            player.removePotionEffect(effect.type)
+        Info.game?.playerMainBookShelf?.set(player, this)
+        player.apply {
+            maxHealth = this@MainBookShelf.maxHealth
+            health = this@MainBookShelf.health
+            inventory.clear()
+            activePotionEffects.forEach { removePotionEffect(it.type) }
+            inventory.setItem(0, this@MainBookShelf.weapon)
         }
-        player.inventory.setItem(0, this.weapon)
     }
 
     fun disheveled(player: Player) {
-        AbnormalStatusManager().run {
+        AbnormalStatusManager().apply {
             player.addDisheveled()
-        }
-        object : BukkitRunnable() {
-            override fun run() {
-                AbnormalStatusManager().run {
+            object : BukkitRunnable() {
+                override fun run() {
                     player.removeDisheveled()
                 }
-            }
-        }.runTaskLater(ProjectLibrary.instance, (this.disheveledTime * 20).toLong())
+            }.runTaskLater(ProjectLibrary.instance, (disheveledTime * 20).toLong())
+        }
     }
 
     fun death(player: Player) {
-        this.health = this.maxHealth
-        player.scoreboardTags.add("isDeath")
-
-        player.gameMode = GameMode.SPECTATOR
-        if (player.isTeam("RedTeam")) {
-            Info.game!!.players.forEach {
-                if (it.isTeam("RedTeam")) {
-                    Info.game!!.playerMainBookShelf[it]!!.emotion -= 2
-                }
-                else if (it.isTeam("BlueTeam")) {
-                    Info.game!!.playerMainBookShelf[it]!!.emotion += 2
-                }
-            }
-        }
-        else {
-            Info.game!!.players.forEach {
-                if (it.isTeam("RedTeam")) {
-                    Info.game!!.playerMainBookShelf[it]!!.emotion += 2
-                }
-                else if (it.isTeam("BlueTeam")) {
-                    Info.game!!.playerMainBookShelf[it]!!.emotion -= 2
-                }
-            }
+        health = maxHealth
+        player.apply {
+            scoreboardTags.add("isDeath")
+            gameMode = GameMode.SPECTATOR
         }
 
-        //좌표 수정 필요
-        when (Info.game!!.floor) {
-            GeneralWorks -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            History -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            TechnologicalSciences -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            Literature -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            Art -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            NaturalSciences -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            Language -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            SocialSciences -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            Philosophy -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            Religion -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-            Kether -> player.teleport(Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f))
-        }
+        adjustEmotion(player)
+
+        player.teleport(getDeathLocation(Info.game?.floor))
 
         GameManager().actEndCheck()
     }
 
-    fun loadToInventory(player: Player) {
-        player.inventory.setItem(9,this.toItem())
-        var i1 = 18
-        this.uniqueAbilities.forEach {
-            player.inventory.setItem(i1, it.toItem())
-            i1++
-            if (i1 >= 27) {
-                return@forEach
+    private fun adjustEmotion(player: Player) {
+        val team = if (player.isTeam("RedTeam")) "RedTeam" else "BlueTeam"
+        val adjustment = if (team == "RedTeam") -2 else 2
+        Info.game?.players?.forEach { teammate ->
+            if (teammate.isTeam(team)) {
+                Info.game?.playerMainBookShelf?.get(teammate)?.emotion = adjustment
+            } else {
+                Info.game?.playerMainBookShelf?.get(teammate)?.emotion = -adjustment
             }
         }
+    }
 
-        var i2 = 27
-        this.abnormalityCards.forEach {
-            player.inventory.setItem(i2, it.toItem())
-            i2++
-            if (i2 >= 36) {
-                return@forEach
+    private fun getDeathLocation(floor: LibraryFloor?): Location {
+        return Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f) // 실제 좌표로 수정 필요
+    }
+
+    fun loadToInventory(player: Player) {
+        player.inventory.apply {
+            setItem(9, this@MainBookShelf.toItem())
+            uniqueAbilities.forEachIndexed { index, ability ->
+                if (index < 9) setItem(18 + index, ability.toItem())
+            }
+            abnormalityCards.forEachIndexed { index, card ->
+                if (index < 9) setItem(27 + index, card.toItem())
             }
         }
     }
 
     fun toItem(): ItemStack {
-        val displayName = when (this.rating) {
-            Supply -> "${ChatColor.GREEN}${ChatColor.BOLD}$name"
-            Advanced -> "${ChatColor.BLUE}${ChatColor.BOLD}$name"
-            Limit -> "${ChatColor.DARK_PURPLE}${ChatColor.BOLD}$name"
-            Rating.Art -> "${ChatColor.YELLOW}${ChatColor.BOLD}$name"
+        val displayName = "${rating.color}${ChatColor.BOLD}$name"
+        val cardItem = ItemStack(Material.BOOK, 1).apply {
+            itemMeta = itemMeta.apply {
+                setDisplayName(displayName)
+                lore = listOf(name, "${ChatColor.RED}최대 체력: ${maxHealth.toInt()}", "${ChatColor.YELLOW}최대 흐트러짐: $maxDisheveled",
+                    weapon.itemMeta.displayName)
+                addItemFlags(ItemFlag.HIDE_ITEM_SPECIFICS)
+            }
         }
-
-        val cardItem = ItemStack(Material.BOOK, 1)
-        val meta = cardItem.itemMeta.apply {
-            setDisplayName(displayName)
-            lore = listOf(name, "${ChatColor.RED}최대 체력: ${maxHealth.toInt()}", "${ChatColor.YELLOW}최대 흐트러짐: $maxDisheveled",
-                weapon.itemMeta.displayName
-            )
-            addItemFlags(ItemFlag.HIDE_ITEM_SPECIFICS)
-        }
-        cardItem.itemMeta = meta
-
         return cardItem
     }
 }
 
-
-enum class Rating {
-    Supply, Advanced, Limit, Art
+enum class Rating(val color: ChatColor) {
+    Supply(ChatColor.GREEN), Advanced(ChatColor.BLUE), Limit(ChatColor.DARK_PURPLE), Art(ChatColor.YELLOW)
 }
