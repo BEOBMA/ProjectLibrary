@@ -28,7 +28,10 @@ data class MainBookShelf(
 
 
     fun disheveled(player: Player) {
-        
+        AbnormalStatusManager().run {
+            player.addUnableMove()
+            player.addUnableAttack()
+        }
     }
 }
 
