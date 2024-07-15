@@ -57,4 +57,32 @@ class AbnormalStatusManager {
 
         player!!.scoreboardTags.remove("UnableAttack")
     }
+
+    /**
+     * 플레이어에게 흐트러짐 상태를 부여함.
+     */
+    fun Player.addDisheveled() {
+        if (!player!!.isParticipation()) return
+
+        player!!.scoreboardTags.add("Disheveled")
+
+    }
+
+    /**
+     * 플레이어가 흐트러짐 상태인지 여부
+     */
+    fun Player.isDisheveled(): Boolean {
+        if (!player!!.isParticipation()) return false
+
+        return player!!.scoreboardTags.contains("Disheveled")
+    }
+
+    /**
+     * 플레이어에게 흐트러짐 상태를 제거함.
+     */
+    fun Player.removeDisheveled(): Boolean {
+        if (!player!!.isParticipation()) return false
+
+        player!!.scoreboardTags.remove("Disheveled")
+    }
 }
