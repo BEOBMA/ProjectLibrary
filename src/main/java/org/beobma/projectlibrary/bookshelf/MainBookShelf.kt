@@ -9,7 +9,7 @@ data class MainBookShelf(
     val rating: Rating,
     val health: Double,
     val maxHealth: Double,
-    val disheveled: Int,
+    var disheveled: Int,
     val maxDisheveled: Int,
     val uniqueAbilities: MutableList<UniqueAbilities>,
     val weapon: ItemStack
@@ -24,6 +24,11 @@ data class MainBookShelf(
             player.removePotionEffect(effect.type)
         }
         player.inventory.setItem(0, this.weapon)
+    }
+
+
+    fun disheveled(player: Player) {
+        
     }
 }
 
