@@ -65,7 +65,8 @@ class AbnormalStatusManager {
         if (!player!!.isParticipation()) return
 
         player!!.scoreboardTags.add("Disheveled")
-
+        player!!.addUnableMove()
+        player!!.addUnableAttack()
     }
 
     /**
@@ -84,5 +85,7 @@ class AbnormalStatusManager {
         if (!player!!.isParticipation()) return false
 
         player!!.scoreboardTags.remove("Disheveled")
+        player!!.removeUnableMove()
+        player!!.removeUnableAttack()
     }
 }
