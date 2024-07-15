@@ -21,10 +21,17 @@ object Util {
     }
 
     fun Player.isTeam(team: String): Boolean {
-        if (player != null) {
-            return GameManager.teams[team]?.hasEntry(player!!.name) == true
+        if (player == null) {
+            return false
         }
-        return false
+        return GameManager.teams[team]?.hasEntry(player!!.name) == true
+    }
+
+    fun Player.isDead(): Boolean {
+        if (player == null) {
+            return true
+        }
+        return player!!.scoreboardTags.contains("isDead")
     }
 
     fun Player.getMainBookShelf(): MainBookShelf? {
