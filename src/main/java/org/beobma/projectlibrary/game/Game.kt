@@ -27,6 +27,7 @@ data class Game(
         Info.game = this
         Info.starting = true
 
+        ProjectLibrary.loggerInfo("[ProjectLibrary] game start success")
         Bukkit.broadcastMessage("${ChatColor.BOLD}[!] 잠시 후 게임을 준비합니다.")
         broadcastDelayedMessages(
             listOf(
@@ -62,6 +63,8 @@ data class Game(
         Info.game = null
         Info.starting = false
         Info.gaming = false
+
+        ProjectLibrary.loggerInfo("[ProjectLibrary] game stop success")
     }
 
     private fun resetPlayer(player: Player) {
