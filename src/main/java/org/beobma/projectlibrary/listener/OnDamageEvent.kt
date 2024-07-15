@@ -10,49 +10,58 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 class OnDamageEvent : Listener {
     @EventHandler
     fun onPlayerAttack(event: EntityDamageByEntityEvent) {
-        val player = event.damager
-        val entity = event.entity
+        val player = event.damager as? Player ?: return
+        val entity = event.entity as? Player ?: return
         val damage = event.damage
-        if (player !is Player) return
+
         if (!Info.isGaming() && !Info.isStarting()) return
 
-        AbnormalStatusManager().run {
-            if (player.isUnableAttack()) {
-                event.isCancelled = true
-                return
-            }
+        if (AbnormalStatusManager().isUnableAttack(player)) {
+            event.isCancelled = true
+            return
         }
 
-        if (entity !is Player) return
-
-        val disheveledDamage = (damage / 4).toInt()
-
-        if (Info.game!!.playerMainBookShelf[entity]!!.disheveled - disheveledDamage <= 0) {
-            AbnormalStatusManager().run {
-                if (player.isDisheveled()) {
-                    event.damage += disheveledDamage
-                }
-                else {
-                    Info.game!!.playerMainBookShelf[entity]!!.disheveled(entity)
-                }
-            }
-        }
-        else {
-            Info.game!!.playerMainBookShelf[entity]!!.disheveled -= disheveledDamage
-        }
+        handleDisheveledDamage(player, entity, damage.toInt())
 
         if (entity.health - event.damage <= 0) {
-            Info.game!!.playerMainBookShelf[entity]!!.emotion -= 3
-            Info.game!!.playerMainBookShelf[player]!!.emotion += 3
-
+            updateEmotionOnDeath(player, entity)
             entity.health = 0.0
-        }
-        else {
-            if (event.damage > 3) {
-                Info.game!!.playerMainBookShelf[entity]!!.emotion -= 1
-                Info.game!!.playerMainBookShelf[player]!!.emotion += 1
-            }
+        } else {
+            updateEmotionOnDamage(player, entity, event.damage)
             Info.game!!.playerMainBookShelf[entity]!!.health = entity.health - event.damage
+        }
+    }
+
+    private fun handleDisheveledDamage(player: Player, entity: Player, damage: Int) {
+        val disheveledDamage = damage / 4
+        val mainBookShelf = Info.game!!.playerMainBookShelf[entity] ?: return
+
+        if (mainBookShelf.disheveled - disheveledDamage <= 0) {
+            if (AbnormalStatusManager().isDisheveled(player)) {
+                player.damage += disheveledDamage
+            } else {
+                mainBookShelf.disheveled(entity)
+            }
+        } else {
+            mainBookShelf.disheveled -= disheveledDamage
+        }
+    }
+
+    private fun updateEmotionOnDeath(player: Player, entity: Player) {
+        val playerBookShelf = Info.game!!.playerMainBookShelf[player] ?: return
+        val entityBookShelf = Info.game!!.playerMainBookShelf[entity] ?: return
+
+        playerBookShelf.emotion += 3
+        entityBookShelf.emotion -= 3
+    }
+
+    private fun updateEmotionOnDamage(player: Player, entity: Player, damage: Double) {
+        val playerBookShelf = Info.game!!.playerMainBookShelf[player] ?: return
+        val entityBookShelf = Info.game!!.playerMainBookShelf[entity] ?: return
+
+        if (damage > 3) {
+            playerBookShelf.emotion += 1
+            entityBookShelf.emotion -= 1
         }
     }
 }
