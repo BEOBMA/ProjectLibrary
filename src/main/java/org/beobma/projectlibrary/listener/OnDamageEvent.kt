@@ -28,7 +28,7 @@ class OnDamageEvent : Listener {
         if (Info.game.playerMainBookShelf[entity]!!.disheveled - disheveledDamage <= 0) {
             AbnormalStatusManager().run {
                 if (player.isDisheveled()) {
-                    player.damage(disheveledDamage)
+                    event.damage += disheveledDamage
                 }
                 else {
                     Info.game.playerMainBookShelf[entity]!!.disheveled()
@@ -37,6 +37,14 @@ class OnDamageEvent : Listener {
         }
         else {
             Info.game.playerMainBookShelf[entity]!!.disheveled -= disheveledDamage
+        }
+
+        if (entity.health - event.damage <= 0) {
+            
+
+        }
+        else {
+            Info.game.playerMainBookShelf[entity]!!.health = entity.health - event.damage
         }
     }
 }
