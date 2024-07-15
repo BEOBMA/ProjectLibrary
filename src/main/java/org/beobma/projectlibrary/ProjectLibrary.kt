@@ -13,7 +13,7 @@ class ProjectLibrary : JavaPlugin() {
     override fun onEnable() {
         instance = this
         pluginRegister()
-        SetUp().setUp()
+        SetUp()
         loggerInfo("[ProjectLibrary] Enabling ProjectLibrary")
     }
 
