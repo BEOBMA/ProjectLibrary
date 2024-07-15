@@ -26,7 +26,14 @@ class OnDamageEvent : Listener {
         val disheveledDamage = (damage / 4).toInt
         
         if (Info.game.playerMainBookShelf[entity]!!.disheveled - disheveledDamage <= 0) {
-            Info.game.playerMainBookShelf[entity]!!.disheveled = 0
+            AbnormalStatusManager().run {
+                if (player.isDisheveled()) {
+                    player.damage(disheveledDamage)
+                }
+                else {
+                    Info.game.playerMainBookShelf[entity]!!.disheveled()
+                }
+            }
         }
         else {
             Info.game.playerMainBookShelf[entity]!!.disheveled -= disheveledDamage
