@@ -17,6 +17,7 @@ data class Game(
     val floor: LibraryFloor = LibraryFloor.GeneralWorks,
     var act: Int = 0,
     val playerMainBookShelf: MutableMap<Player, MainBookShelf> = mutableMapOf(),
+    val playerBukkitRunnable: MutableMap<Player, BukkitRunnable> = mutableMapOf(),
     val blueTeamScore: Int = 0,
     val redTeamScore: Int = 0
 ) {
