@@ -12,7 +12,8 @@ data class MainBookShelf(
     var disheveled: Int,
     val maxDisheveled: Int,
     val uniqueAbilities: MutableList<UniqueAbilities>,
-    val weapon: ItemStack
+    val weapon: ItemStack,
+    val disheveledTime: Int = 3
 ) {
 
     fun set(player: Player) {
@@ -29,9 +30,15 @@ data class MainBookShelf(
 
     fun disheveled(player: Player) {
         AbnormalStatusManager().run {
-            player.addUnableMove()
-            player.addUnableAttack()
+            player.addDisheveled()
         }
+        object : BukkitRunnable() {
+            override fun run() {
+                AbnormalStatusManager().run {
+                    player.removeDisheveled()
+                }
+            }
+        }.runTaskLater(ProjectLibrary.instance, (this.disheveledTime * 20).toLong)
     }
 }
 
