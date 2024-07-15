@@ -11,6 +11,7 @@ class OnDamageEvent : Listener {
     @EventHandler
     fun onPlayerAttack(event: EntityDamageByEntityEvent) {
         val player = event.damager
+        val entity = event.entity
         val damage = event.damage
         if (player !is Player) return
         if (!Info.isGaming() && !Info.isStarting()) return
@@ -20,7 +21,15 @@ class OnDamageEvent : Listener {
             event.isCancelled = true
             return
         }
+        if (entity !is Player) return
 
+        val disheveledDamage = (damage / 4).toInt
         
+        if (Info.game.playerMainBookShelf[entity]!!.disheveled - disheveledDamage <= 0) {
+            Info.game.playerMainBookShelf[entity]!!.disheveled = 0
+        }
+        else {
+            Info.game.playerMainBookShelf[entity]!!.disheveled -= disheveledDamage
+        }
     }
 }
