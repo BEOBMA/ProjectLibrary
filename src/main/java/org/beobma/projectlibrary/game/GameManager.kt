@@ -134,10 +134,6 @@ class GameManager {
 
     fun preparationGame() {
         Info.game!!.act++
-        if (Info.game!!.floor != Kether || Info.game!!.act <= 1) {
-            Info.game!!.musicBukkitScheduler?.cancel()
-            Info.game!!.musicBukkitScheduler = null
-        }
         Info.game!!.players.forEach { player ->
             AbnormalStatusManager().run {
                 player.scoreboardTags.remove("isDeath")
@@ -264,6 +260,10 @@ class GameManager {
 
     private fun musicDisk() {
         Info.game!!.players.forEach { player ->
+            if (Info.game!!.floor != Kether || Info.game!!.act <= 1) {
+                Info.game!!.musicBukkitScheduler?.cancel()
+                Info.game!!.musicBukkitScheduler = null
+            }
             when (Info.game!!.floor) {
                 GeneralWorks -> when (Info.game!!.act) {
                     1 -> {
