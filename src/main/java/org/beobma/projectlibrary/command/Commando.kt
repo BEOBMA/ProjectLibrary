@@ -16,7 +16,7 @@ import java.util.*
 
 class Commando : Listener, CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<String>): Boolean {
-        if (cmd.name.equals("pl", ignoreCase = true) && args.isNotEmpty()) {
+        if (cmd.name.equals("lor", ignoreCase = true) && args.isNotEmpty()) {
             if (sender !is Player) {
                 sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 이 명령어는 플레이어만 사용할 수 있습니다.")
                 return false
@@ -32,7 +32,7 @@ class Commando : Listener, CommandExecutor, TabCompleter {
                     }
 
                     val world = Bukkit.getWorld("world")
-                    if (world?.seed != 8971917449433682803) {
+                    if (world?.seed != 3004803528572901972) {
                         sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 이 플러그인은 전용 맵과 함께 사용해야 합니다.")
                         sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 게임을 강제로 종료합니다.")
                         return true
@@ -58,7 +58,7 @@ class Commando : Listener, CommandExecutor, TabCompleter {
                         sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 현재 게임중이 아닙니다.")
                         return false
                     }
-                    if (sender !in Info.game!!.players || sender.isTeam("SpectatorTeam")) {
+                    if (sender !in Info.game!!.players) {
                         sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 게임 참가자가 아닙니다.")
                         return false
                     }
@@ -79,7 +79,7 @@ class Commando : Listener, CommandExecutor, TabCompleter {
     override fun onTabComplete(
         sender: CommandSender, command: Command, alias: String, args: Array<String>
     ): List<String> {
-        if (command.name.equals("pl", ignoreCase = true)) {
+        if (command.name.equals("lor", ignoreCase = true)) {
             return when (args.size) {
                 1 -> listOf("start", "stop", "info")
                 else -> emptyList()

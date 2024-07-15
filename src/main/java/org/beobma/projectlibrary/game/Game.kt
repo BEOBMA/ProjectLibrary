@@ -4,6 +4,7 @@ package org.beobma.projectlibrary.game
 
 import org.beobma.projectlibrary.ProjectLibrary
 import org.beobma.projectlibrary.bookshelf.MainBookShelf
+import org.beobma.projectlibrary.game.GameManager.Companion.teams
 import org.beobma.projectlibrary.info.Info
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -11,14 +12,16 @@ import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.scheduler.BukkitTask
 
 data class Game(
     val players: List<Player>,
     val floor: LibraryFloor = LibraryFloor.GeneralWorks,
     var act: Int = 0,
     val playerMainBookShelf: MutableMap<Player, MainBookShelf> = mutableMapOf(),
-    val blueTeamScore: Int = 0,
-    val redTeamScore: Int = 0
+    var blueTeamScore: Int = 0,
+    var redTeamScore: Int = 0,
+    var musicBukkitScheduler: BukkitTask? = null
 ) {
     fun start() {
         Info.game = this
@@ -37,7 +40,7 @@ data class Game(
             override fun run() {
                 GameManager().teamPick()
             }
-        }.runTaskLater(ProjectLibrary.instance, 80L)
+        }.runTaskLater(ProjectLibrary.instance, 240L)
     }
 
     fun stop() {
@@ -46,6 +49,7 @@ data class Game(
 
         game.players.forEach { player ->
             player.inventory.clear()
+            player.stopAllSounds()
             player.clearActivePotionEffects()
             player.gameMode = GameMode.ADVENTURE
             player.maxHealth = 20.0
@@ -54,10 +58,14 @@ data class Game(
             tags.forEach { tag ->
                 player.removeScoreboardTag(tag)
             }
+            for ((_, team) in teams) {
+                team?.entries?.forEach { entry ->
+                    team.removeEntry(entry)
+                }
+            }
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "scoreboard players reset @a")
 
-            //좌표 수정 필요
-            player.teleport(Location(player.world, 0.5, -60.0, 0.5))
+            player.teleport(Location(player.world, 2.5, -60.0, 0.5, 90f, 0f))
         }
 
         Info.game = null
@@ -78,5 +86,5 @@ data class Game(
 }
 
 enum class LibraryFloor {
-    GeneralWorks, History, TechnologicalSciences, Literature, Art, NaturalSciences, Language, Sciences, Philosophy, Religion, Kether
+    GeneralWorks, History, TechnologicalSciences, Literature, Art, NaturalSciences, Language, SocialSciences, Philosophy, Religion, Kether
 }

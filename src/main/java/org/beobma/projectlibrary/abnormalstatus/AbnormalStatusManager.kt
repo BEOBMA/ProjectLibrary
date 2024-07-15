@@ -1,7 +1,9 @@
 package org.beobma.projectlibrary.abnormalstatus
 
+import org.beobma.projectlibrary.ProjectLibrary
 import org.beobma.projectlibrary.util.Util.isParticipation
 import org.bukkit.entity.Player
+import org.bukkit.scheduler.BukkitRunnable
 
 class AbnormalStatusManager {
     /**
@@ -71,12 +73,10 @@ class AbnormalStatusManager {
         object : BukkitRunnable() {
             override fun run() {
                 if (!player!!.isDisheveled()) {
-                    this.cancle()
+                    this.cancel()
                 }
-
-                
             }
-        }.runTaskLater(ProjectLibrary.instance, 0L, 1L)
+        }.runTaskTimer(ProjectLibrary.instance, 0L, 1L)
     }
 
     /**
@@ -91,8 +91,8 @@ class AbnormalStatusManager {
     /**
      * 플레이어에게 흐트러짐 상태를 제거함.
      */
-    fun Player.removeDisheveled(): Boolean {
-        if (!player!!.isParticipation()) return false
+    fun Player.removeDisheveled() {
+        if (!player!!.isParticipation()) return
 
         player!!.scoreboardTags.remove("Disheveled")
         player!!.removeUnableMove()

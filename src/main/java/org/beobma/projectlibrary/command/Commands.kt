@@ -9,10 +9,12 @@ import org.bukkit.entity.Player
 
 class Commands {
     fun Player.gameStart(players: List<Player>) {
+        /*
         if (players.size < 2) {
             sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 참가자가 2명 미만이므로 게임을 시작할 수 없습니다.")
             return
         }
+        */
 
         when {
             Info.isStarting() -> {
@@ -41,7 +43,5 @@ class Commands {
             sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 게임 진행중이 아닙니다.")
             return
         }
-
-        
     }
 }

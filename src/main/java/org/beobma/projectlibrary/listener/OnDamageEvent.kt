@@ -17,34 +17,42 @@ class OnDamageEvent : Listener {
         if (!Info.isGaming() && !Info.isStarting()) return
 
         AbnormalStatusManager().run {
-            if (!player.isUnableAttack()) return
-            event.isCancelled = true
-            return
+            if (player.isUnableAttack()) {
+                event.isCancelled = true
+                return
+            }
         }
+
         if (entity !is Player) return
 
-        val disheveledDamage = (damage / 4).toInt
-        
-        if (Info.game.playerMainBookShelf[entity]!!.disheveled - disheveledDamage <= 0) {
+        val disheveledDamage = (damage / 4).toInt()
+
+        if (Info.game!!.playerMainBookShelf[entity]!!.disheveled - disheveledDamage <= 0) {
             AbnormalStatusManager().run {
                 if (player.isDisheveled()) {
                     event.damage += disheveledDamage
                 }
                 else {
-                    Info.game.playerMainBookShelf[entity]!!.disheveled()
+                    Info.game!!.playerMainBookShelf[entity]!!.disheveled(entity)
                 }
             }
         }
         else {
-            Info.game.playerMainBookShelf[entity]!!.disheveled -= disheveledDamage
+            Info.game!!.playerMainBookShelf[entity]!!.disheveled -= disheveledDamage
         }
 
         if (entity.health - event.damage <= 0) {
-            
+            Info.game!!.playerMainBookShelf[entity]!!.emotion -= 3
+            Info.game!!.playerMainBookShelf[player]!!.emotion += 3
 
+            entity.health = 0.0
         }
         else {
-            Info.game.playerMainBookShelf[entity]!!.health = entity.health - event.damage
+            if (event.damage > 3) {
+                Info.game!!.playerMainBookShelf[entity]!!.emotion -= 1
+                Info.game!!.playerMainBookShelf[player]!!.emotion += 1
+            }
+            Info.game!!.playerMainBookShelf[entity]!!.health = entity.health - event.damage
         }
     }
 }

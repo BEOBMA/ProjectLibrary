@@ -2,8 +2,7 @@ package org.beobma.projectlibrary
 
 import org.beobma.projectlibrary.command.Commando
 import org.beobma.projectlibrary.info.SetUp
-import org.beobma.projectlibrary.listener.OnDamageEvent
-import org.beobma.projectlibrary.listener.OnMoveEvent
+import org.beobma.projectlibrary.listener.*
 import org.bukkit.plugin.java.JavaPlugin
 
 class ProjectLibrary : JavaPlugin() {
@@ -23,10 +22,14 @@ class ProjectLibrary : JavaPlugin() {
     }
 
     private fun pluginRegister() {
-        server.getPluginCommand("pt")?.setExecutor(Commando())
+        server.getPluginCommand("lor")?.setExecutor(Commando())
         server.pluginManager.registerEvents(Commando(), this)
         server.pluginManager.registerEvents(OnDamageEvent(), this)
         server.pluginManager.registerEvents(OnMoveEvent(), this)
+        server.pluginManager.registerEvents(OnClickItem(), this)
+        server.pluginManager.registerEvents(OnInventoryClose(), this)
+        server.pluginManager.registerEvents(OnSwapHands(), this)
+        server.pluginManager.registerEvents(OnPlayerDeathEvet(), this)
     }
 
     fun loggerInfo(msg: String) {
