@@ -67,6 +67,16 @@ class AbnormalStatusManager {
         player!!.scoreboardTags.add("Disheveled")
         player!!.addUnableMove()
         player!!.addUnableAttack()
+
+        object : BukkitRunnable() {
+            override fun run() {
+                if (!player!!.isDisheveled()) {
+                    this.cancle()
+                }
+
+                
+            }
+        }.runTaskLater(ProjectLibrary.instance, 0L, 1L)
     }
 
     /**
