@@ -79,6 +79,7 @@ data class Game(
                 removeScoreboardTag(tag)
             }
             teleport(Location(world, 2.5, -60.0, 0.5, 90f, 0f))
+            ProjectLibrary.loggerInfo("[ProjectLibrary] player ${player.name} reset success")
         }
     }
 
