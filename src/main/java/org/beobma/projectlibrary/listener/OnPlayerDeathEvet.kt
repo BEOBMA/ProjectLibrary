@@ -12,6 +12,7 @@ class OnPlayerDeathEvet : Listener {
 
         if (Info.isGaming()) {
             Info.game!!.playerMainBookShelf[player]!!.death(player)
+            event.isCancelled = true
         }
     }
 }
