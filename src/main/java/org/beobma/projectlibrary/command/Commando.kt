@@ -52,21 +52,7 @@ class Commando : Listener, CommandExecutor, TabCompleter {
                     commandManager.run { sender.gameStop() }
                     return true
                 }
-
-                "info" -> {
-                    if (!Info.isGaming()) {
-                        sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 현재 게임중이 아닙니다.")
-                        return false
-                    }
-                    if (sender !in Info.game!!.players) {
-                        sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 게임 참가자가 아닙니다.")
-                        return false
-                    }
-
-                    commandManager.run { sender.info() }
-                    return true
-                }
-
+                
                 else -> {
                     sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 알 수 없는 명령어: ${args[0]}.")
                     return false
@@ -81,7 +67,7 @@ class Commando : Listener, CommandExecutor, TabCompleter {
     ): List<String> {
         if (command.name.equals("lor", ignoreCase = true)) {
             return when (args.size) {
-                1 -> listOf("start", "stop", "info")
+                1 -> listOf("start", "stop")
                 else -> emptyList()
             }
         }
