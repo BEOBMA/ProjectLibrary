@@ -15,6 +15,7 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import kotlin.random.Random
 
 object Util {
     fun Player.isParticipation(): Boolean {
@@ -65,14 +66,32 @@ object Util {
     }
 
     fun ItemStack.toAbnormalityCard(): AbnormalityCard {
-        var abnormalityCard = SetUp.abnormalityCardList.find { "${ChatColor.DARK_GREEN}${ChatColor.BOLD}${it.name}" == this.itemMeta.displayName }
+        var abnormalityCard =
+            SetUp.abnormalityCardList.find { "${ChatColor.DARK_GREEN}${ChatColor.BOLD}${it.name}" == this.itemMeta.displayName }
 
-        if (abnormalityCard !is AbnormalityCard)
-            abnormalityCard = SetUp.abnormalityCardList.find { "${ChatColor.DARK_RED}${ChatColor.BOLD}${it.name}" == this.itemMeta.displayName }
-        }
+        if (abnormalityCard !is AbnormalityCard) abnormalityCard =
+            SetUp.abnormalityCardList.find { "${ChatColor.DARK_RED}${ChatColor.BOLD}${it.name}" == this.itemMeta.displayName }
         if (abnormalityCard !is AbnormalityCard) {
-            return AbnormalityCard("오류", listOf("이 환상체는 찾을 수 없는 환상체입니다. 개발자에게 문의해주세요."), EmotionType.Negative, LibraryFloor.Kether, 3)
+            return AbnormalityCard(
+                "오류",
+                listOf("이 환상체는 찾을 수 없는 환상체입니다. 개발자에게 문의해주세요."),
+                EmotionType.Negative,
+                LibraryFloor.Kether,
+                3
+            )
         }
         return abnormalityCard
+    }
+
+    fun Int.isTrueWithProbability(): Boolean {
+        return Random.nextInt(100) < this
+    }
+
+    fun Double.increaseByPercentage(percentage: Int): Double {
+        return (this + (this * percentage / 100))
+    }
+
+    fun Double.percentageOf(percentage: Int): Double {
+        return (this * percentage / 100)
     }
 }

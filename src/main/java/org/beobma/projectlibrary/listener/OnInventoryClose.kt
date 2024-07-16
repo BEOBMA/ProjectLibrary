@@ -30,7 +30,7 @@ class OnInventoryClose : Listener {
 
         if (game.players.none { it.scoreboardTags.contains("rewardChose") }) {
             if (event.inventory.contains(Material.BOOK)) {
-                GameManager().mainBookShelfEnd()
+                GameManager().advanceFloor()
             }
             else {
                 GameManager().preparationGame()

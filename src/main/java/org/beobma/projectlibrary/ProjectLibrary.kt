@@ -30,6 +30,9 @@ class ProjectLibrary : JavaPlugin() {
         server.pluginManager.registerEvents(OnInventoryClose(), this)
         server.pluginManager.registerEvents(OnSwapHands(), this)
         server.pluginManager.registerEvents(OnPlayerDeathEvet(), this)
+        server.pluginManager.registerEvents(OnPlayerQuickEvent(), this)
+        server.pluginManager.registerEvents(OnStageStart(), this)
+        server.pluginManager.registerEvents(OnPlayerJump(), this)
     }
 
     fun loggerInfo(msg: String) {

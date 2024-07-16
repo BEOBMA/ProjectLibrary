@@ -5,14 +5,11 @@ package org.beobma.projectlibrary.bookshelf
 import org.beobma.projectlibrary.ProjectLibrary
 import org.beobma.projectlibrary.abnormalitycard.AbnormalityCard
 import org.beobma.projectlibrary.abnormalstatus.AbnormalStatusManager
-import org.beobma.projectlibrary.bookshelf.Rating.*
 import org.beobma.projectlibrary.game.GameManager
-import org.beobma.projectlibrary.game.LibraryFloor.*
 import org.beobma.projectlibrary.info.Info
 import org.beobma.projectlibrary.util.Util.isTeam
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -23,7 +20,7 @@ data class MainBookShelf(
     val name: String,
     val rating: Rating,
     var health: Double,
-    val maxHealth: Double,
+    var maxHealth: Double,
     var disheveled: Int,
     val maxDisheveled: Int,
     val uniqueAbilities: MutableList<UniqueAbilities>,
@@ -46,12 +43,7 @@ data class MainBookShelf(
 
     fun disheveled(player: Player) {
         AbnormalStatusManager().apply {
-            player.addDisheveled()
-            object : BukkitRunnable() {
-                override fun run() {
-                    player.removeDisheveled()
-                }
-            }.runTaskLater(ProjectLibrary.instance, (disheveledTime * 20).toLong())
+            player.addDisheveled(this@MainBookShelf.disheveledTime)
         }
     }
 
@@ -61,11 +53,7 @@ data class MainBookShelf(
             scoreboardTags.add("isDeath")
             gameMode = GameMode.SPECTATOR
         }
-
         adjustEmotion(player)
-
-        player.teleport(getDeathLocation(Info.game?.floor))
-
         GameManager().actEndCheck()
     }
 
@@ -74,15 +62,11 @@ data class MainBookShelf(
         val adjustment = if (team == "RedTeam") -2 else 2
         Info.game?.players?.forEach { teammate ->
             if (teammate.isTeam(team)) {
-                Info.game?.playerMainBookShelf?.get(teammate)?.emotion = adjustment
+                Info.game!!.playerMainBookShelf[teammate]!!.emotion += adjustment
             } else {
-                Info.game?.playerMainBookShelf?.get(teammate)?.emotion = -adjustment
+                Info.game!!.playerMainBookShelf[teammate]!!.emotion += -adjustment
             }
         }
-    }
-
-    private fun getDeathLocation(floor: LibraryFloor?): Location {
-        return Location(Info.world, 0.0, 0.0, 0.0, 0f, 0f) // 실제 좌표로 수정 필요
     }
 
     fun loadToInventory(player: Player) {
@@ -108,6 +92,19 @@ data class MainBookShelf(
             }
         }
         return cardItem
+    }
+
+    fun removeDisheveled(n: Int, player: Player) {
+        this@MainBookShelf.disheveled -= n
+
+        if (this@MainBookShelf.disheveled <= 0) {
+            this@MainBookShelf.disheveled(player)
+        }
+    }
+
+    fun paleDamage(damage: Double, player: Player) {
+        this@MainBookShelf.health -= damage
+        player.health = this@MainBookShelf.health
     }
 }
 

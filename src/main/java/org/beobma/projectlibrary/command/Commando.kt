@@ -2,8 +2,10 @@
 
 package org.beobma.projectlibrary.command
 
+import org.beobma.projectlibrary.abnormalitycard.AbnormalityCard
 import org.beobma.projectlibrary.info.Info
-import org.beobma.projectlibrary.util.Util.isTeam
+import org.beobma.projectlibrary.info.SetUp
+import org.beobma.projectlibrary.util.Util.getMainBookShelf
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -58,10 +60,28 @@ class Commando : Listener, CommandExecutor, TabCompleter {
                         sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 이 명령어를 사용할 권한이 없습니다.")
                         return false
                     }
+                    sender.getMainBookShelf()?.disheveled(sender)
                     return true
-
                 }
-                
+
+                "get" -> {
+                    if (args.size < 2) {
+                        sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 필수 인수가 누락되었습니다.")
+                        return false
+                    }
+                    val game = Info.game ?: run {
+                        return false
+                    }
+
+                    val key = args.drop(1).joinToString(" ").trim()
+                    val card = SetUp.abnormalityCardList.find { it.name.trim() == key }
+                    if (card !is AbnormalityCard) {
+                        sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 해당 이름을 가진 카드가 존재하지 않습니다.")
+                        return false
+                    }
+                    sender.getMainBookShelf()!!.abnormalityCards.add(card)
+                }
+
                 else -> {
                     sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 알 수 없는 명령어: ${args[0]}.")
                     return false

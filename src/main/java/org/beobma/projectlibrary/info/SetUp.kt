@@ -144,7 +144,6 @@ class SetUp {
                 ),
                 AbnormalityCard(
                     "죄책감", listOf(
-                        textManager.oneTimeMessage(),
                         "${ChatColor.GRAY}받는 ${textManager.goldenMessagetoGray("흐트러짐")} 피해가 2 감소한다.",
                         "${ChatColor.GRAY}공격으로 받은 피해의 절반만큼 공격자에게 ${textManager.goldenMessagetoGray("흐트러짐")} 피해를 준다.",
                     ), EmotionType.Negative, LibraryFloor.GeneralWorks, 3
@@ -159,15 +158,15 @@ class SetUp {
 
                 AbnormalityCard(
                     "발걸음", listOf(
-                        "${ChatColor.GRAY}피격 시 체력이 20% 이하인 경우, 공격자에게 자신 최대 체력의 30% 만큼 피해를 준다."
+                        "${ChatColor.GRAY}피격 시 체력이 20% 이하인 경우, 공격자에게 자신 최대 체력의 30% 만큼 피해를 준다.",
                         "${ChatColor.GRAY}이후 자신은 사망한다."
                     ), EmotionType.Negative, LibraryFloor.History, 2
                 ),
 
                 AbnormalityCard(
                     "성냥불", listOf(
-                        "${ChatColor.GRAY}적중 시 자신에게 ${textManager.redMessagetoGray("불씨")}를 부여한다."
-                        "${ChatColor.GRAY}적중 시 불씨 만큼 추가 피해를 입힌다."
+                        "${ChatColor.GRAY}적중 시 자신에게 ${textManager.redMessagetoGray("불씨")}를 부여한다.",
+                        "${ChatColor.GRAY}적중 시 불씨 만큼 추가 피해를 입힌다.",
                         "${ChatColor.GRAY}불씨가 4 이상이면 25% 확률로 자신은 불씨 만큼의 피해를 입는다."
                     ), EmotionType.Negative, LibraryFloor.History, 1
                 ),
@@ -182,13 +181,13 @@ class SetUp {
 
                 AbnormalityCard(
                     "행복한 기억", listOf(
-                        "${ChatColor.GRAY}동일한 대상을 공격할 때마다 ${textManager.DarkGreenMessagetoGray("긍정 감정")}을 누적한다."
+                        "${ChatColor.GRAY}동일한 대상을 공격할 때마다 ${textManager.darkGreenMessagetoGray("긍정 감정")}을 누적한다."
                     ), EmotionType.Affirmation, LibraryFloor.History, 1
                 ),
 
                 AbnormalityCard(
                     "애정 표현", listOf(
-                        "${ChatColor.GRAY}적중 시 대상이 자신을 바라보고 있지 않았다면 2의 추가 피해를 입힌다."
+                        "${ChatColor.GRAY}적중 시 대상이 자신을 바라보고 있지 않았다면 2의 추가 피해를 입힌다.",
                         "${ChatColor.GRAY}적중 시 대상이 자신을 바라보고 있었다면 가하는 피해가 2 감소한다."
                     ), EmotionType.Negative, LibraryFloor.History, 1
                 ),
@@ -209,7 +208,7 @@ class SetUp {
 
                 AbnormalityCard(
                     "포식", listOf(
-                        "${ChatColor.GRAY}막 시작 시 체력을 최대 체력의 30% 만큼 소모한다."
+                        "${ChatColor.GRAY}막 시작 시 체력을 최대 체력의 30% 만큼 소모한다.",
                         "${ChatColor.GRAY}이번 막동안 피해량이 3 증가한다."
                     ), EmotionType.Negative, LibraryFloor.History, 2
                 ),
@@ -224,7 +223,7 @@ class SetUp {
 
                 AbnormalityCard(
                     "일벌", listOf(
-                        "${ChatColor.GRAY}자신에게 피해를 입힌 대상에게 표적이 찍힌다."
+                        "${ChatColor.GRAY}자신에게 피해를 입힌 대상에게 표적이 찍힌다.",
                         "${ChatColor.GRAY}해당 적을 아군이 공격할 때 피해량이 2 증가한다."
                     ), EmotionType.Negative, LibraryFloor.History, 2
                 ),
@@ -235,7 +234,7 @@ class SetUp {
                     ), EmotionType.Negative, LibraryFloor.History, 3
                 ),
 
-            )
+                )
         )
     }
 

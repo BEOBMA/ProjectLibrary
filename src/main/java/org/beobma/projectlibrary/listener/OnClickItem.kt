@@ -58,7 +58,7 @@ class OnClickItem : Listener {
 
         if (game.players.none { it.scoreboardTags.contains("rewardChose") }) {
             if (clickItem.type == Material.BOOK) {
-                GameManager().mainBookShelfEnd()
+                GameManager().advanceFloor()
             }
             else {
                 GameManager().preparationGame()

@@ -15,26 +15,30 @@ import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
 
 data class Game(
-    val players: List<Player>,
-    val floor: LibraryFloor = LibraryFloor.GeneralWorks,
+    var players: List<Player>,
+    var floor: LibraryFloor = LibraryFloor.GeneralWorks,
     var act: Int = 0,
     val playerMainBookShelf: MutableMap<Player, MainBookShelf> = mutableMapOf(),
     var blueTeamScore: Int = 0,
     var redTeamScore: Int = 0,
-    var musicBukkitScheduler: BukkitTask? = null
+    var musicBukkitScheduler: BukkitTask? = null,
+    val stageBukkitScheduler: MutableList<BukkitTask> = mutableListOf(),
+    val stageEndBukkitScheduler: MutableList<() -> Unit> = mutableListOf(),
+    val mapBukkitScheduler: MutableMap<Player, MutableMap<String, BukkitTask>> = mutableMapOf(),
+    val stageLognBukkitScheduler: MutableList<BukkitTask> = mutableListOf()
 ) {
     fun start() {
         Info.game = this
         Info.starting = true
 
-        ProjectLibrary.loggerInfo("[ProjectLibrary] game start success")
+        ProjectLibrary.instance.loggerInfo("[ProjectLibrary] game start success")
         Bukkit.broadcastMessage("${ChatColor.BOLD}[!] 잠시 후 게임을 준비합니다.")
         broadcastDelayedMessages(
             listOf(
                 "${ChatColor.BOLD}[!] 해당 플러그인과 맵, 리소스팩은 BEOBMA에 의해 개발되었으며 2차 창작물로 분류됩니다.",
                 "${ChatColor.BOLD}[!] 해당 플러그인에 대한 무단 수정, 배포 등을 금지합니다.",
                 "${ChatColor.BOLD}[!] 잠시 후 게임을 시작합니다."
-            ), 60L
+            )
         )
 
         object : BukkitRunnable() {
@@ -64,10 +68,10 @@ data class Game(
         Info.starting = false
         Info.gaming = false
 
-        ProjectLibrary.loggerInfo("[ProjectLibrary] game stop success")
+        ProjectLibrary.instance.loggerInfo("[ProjectLibrary] game stop success")
     }
 
-    private fun resetPlayer(player: Player) {
+    fun resetPlayer(player: Player) {
         player.apply {
             inventory.clear()
             stopAllSounds()
@@ -75,15 +79,19 @@ data class Game(
             gameMode = GameMode.ADVENTURE
             maxHealth = 20.0
             health = 20.0
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute ${player.name} minecraft:generic.attack_speed base set 4.0")
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "attribute ${player.name} minecraft:generic.movement_speed base set 0.10000000149011612")
             scoreboardTags.toList().forEach { tag ->
                 removeScoreboardTag(tag)
             }
+            player.setPlayerListName(player.name)
             teleport(Location(world, 2.5, -60.0, 0.5, 90f, 0f))
-            ProjectLibrary.loggerInfo("[ProjectLibrary] player ${player.name} reset success")
+            ProjectLibrary.instance.loggerInfo("[ProjectLibrary] player ${player.name} reset success")
         }
     }
 
-    private fun broadcastDelayedMessages(messages: List<String>, delay: Long) {
+    private fun broadcastDelayedMessages(messages: List<String>) {
+        val delay = 60L
         messages.forEachIndexed { index, message ->
             object : BukkitRunnable() {
                 override fun run() {
