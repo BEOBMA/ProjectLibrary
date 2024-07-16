@@ -65,13 +65,14 @@ object Util {
     }
 
     fun ItemStack.toAbnormalityCard(): AbnormalityCard {
-        val lore = this.itemMeta.lore as List<String>
-        val abnormalityCard = SetUp.abnormalityCardList.find { it.description.first().trim() == lore.first().trim() }
+        var abnormalityCard = SetUp.abnormalityCardList.find { "${ChatColor.DARK_GREEN}${ChatColor.BOLD}${it.name}" == this.itemMeta.displayName }
+
+        if (abnormalityCard !is AbnormalityCard)
+            abnormalityCard = SetUp.abnormalityCardList.find { "${ChatColor.DARK_RED}${ChatColor.BOLD}${it.name}" == this.itemMeta.displayName }
+        }
         if (abnormalityCard !is AbnormalityCard) {
             return AbnormalityCard("오류", listOf("이 환상체는 찾을 수 없는 환상체입니다. 개발자에게 문의해주세요."), EmotionType.Negative, LibraryFloor.Kether, 3)
         }
         return abnormalityCard
-
-        //Bug slot
     }
 }
