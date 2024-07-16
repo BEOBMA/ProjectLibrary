@@ -25,6 +25,13 @@ class OnPlayerQuickEvent : Listener {
         val playerList = Info.game!!.players.toMutableList()
         playerList.remove(player)
         Info.game!!.players = playerList.toList()
+        val redTeamList = teams["RedTeam"]?.players?
+        val blueTeamList = teams["BlueTeam"]?.players?
+
+        if (redTeamList.isNullOrEmpty() || blueTeamList.isNullOrEmpty()) {
+            Info.game!!.stop()
+            ProjectLibrary.instance.loggerInfo("[ProjectLibrary] game stop at team null")
+        }
 
         if (Info.game!!.players.isEmpty() || Info.game!!.players.size == 1) {
             Info.game!!.stop()
