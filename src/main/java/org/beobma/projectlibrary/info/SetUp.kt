@@ -148,7 +148,72 @@ class SetUp {
                         "${ChatColor.GRAY}받는 ${textManager.goldenMessagetoGray("흐트러짐")} 피해가 2 감소한다.",
                         "${ChatColor.GRAY}공격으로 받은 피해의 절반만큼 공격자에게 ${textManager.goldenMessagetoGray("흐트러짐")} 피해를 준다.",
                     ), EmotionType.Negative, LibraryFloor.GeneralWorks, 3
-                )
+                ),
+
+
+                AbnormalityCard(
+                    "재", listOf(
+                        "${ChatColor.GRAY}피격 시 공격자에게 ${textManager.redMessagetoGray("화상")} 2를 부여한다."
+                    ), EmotionType.Affirmation, LibraryFloor.History, 1
+                ),
+
+                AbnormalityCard(
+                    "발걸음", listOf(
+                        "${ChatColor.GRAY}피격 시 체력이 20% 이하인 경우, 공격자에게 자신 최대 체력의 30% 만큼 피해를 준다."
+                        "${ChatColor.GRAY}이후 자신은 사망한다."
+                    ), EmotionType.Negative, LibraryFloor.History, 2
+                ),
+
+                AbnormalityCard(
+                    "성냥불", listOf(
+                        "${ChatColor.GRAY}적중 시 자신에게 ${textManager.redMessagetoGray("불씨")}를 부여한다."
+                        "${ChatColor.GRAY}적중 시 불씨 만큼 추가 피해를 입힌다."
+                        "${ChatColor.GRAY}불씨가 4 이상이면 25% 확률로 자신은 불씨 만큼의 피해를 입는다."
+                    ), EmotionType.Negative, LibraryFloor.History, 1
+                ),
+
+
+                AbnormalityCard(
+                    "그리웠던 옛날의 포옹", listOf(
+                        "${ChatColor.GRAY}적중 시 20% 확률로 5의 ${textManager.goldenMessagetoGray("흐트러짐")} 피해를 받는다.",
+                        "${ChatColor.GRAY}동일한 대상을 공격할 때마다 확률이 증가한다.",
+                    ), EmotionType.Affirmation, LibraryFloor.History, 1
+                ),
+
+                AbnormalityCard(
+                    "행복한 기억", listOf(
+                        "${ChatColor.GRAY}동일한 대상을 공격할 때마다 ${textManager.DarkGreenMessagetoGray("긍정 감정")}을 누적한다."
+                    ), EmotionType.Affirmation, LibraryFloor.History, 1
+                ),
+
+                AbnormalityCard(
+                    "애정 표현", listOf(
+                        "${ChatColor.GRAY}적중 시 대상이 자신을 바라보고 있지 않았다면 2의 추가 피해를 입힌다."
+                        "${ChatColor.GRAY}적중 시 대상이 자신을 바라보고 있었다면 가하는 피해가 2 감소한다."
+                    ), EmotionType.Negative, LibraryFloor.History, 1
+                ),
+
+
+                AbnormalityCard(
+                    "요정들의 보살핌", listOf(
+                        "${ChatColor.GRAY}매 막마다 최대 체력이 30% 증가한다.",
+                        "${ChatColor.GRAY}이 효과가 적용중인 동안 5번 이상 피격 시, 현재 체력의 30%를 잃는다.",
+                    ), EmotionType.Negative, LibraryFloor.History, 1
+                ),
+
+                AbnormalityCard(
+                    "식탐", listOf(
+                        "${ChatColor.GRAY}적중 시 대상의 체력이 50% 이하라면, 피해량이 2 증가하고 체력을 3 회복한다."
+                    ), EmotionType.Affirmation, LibraryFloor.History, 2
+                ),
+
+                AbnormalityCard(
+                    "포식", listOf(
+                        "${ChatColor.GRAY}막 시작 시 체력을 최대 체력의 30% 만큼 소모한다."
+                        "${ChatColor.GRAY}이번 막동안 피해량이 3 증가한다."
+                    ), EmotionType.Negative, LibraryFloor.History, 2
+                ),
+
             )
         )
     }
