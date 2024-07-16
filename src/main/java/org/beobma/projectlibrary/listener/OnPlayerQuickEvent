@@ -1,1 +1,18 @@
-d
+package org.beobma.projectlibrary.listener
+
+
+
+class OnPlayerQuickEvent : Listener {
+
+    @EventHandler
+    fun OnPlayerQuick(event: PlayerQuitEvent) {
+        val player = event.player
+
+        if (!Info.isGaming() && !Info.IsStarting()) return
+        if (player !in Info.game.players) return
+
+        val playerList = Info.game.toMutableList()
+        playerList.remove(player)
+        Info.game = playerList.toList()
+    }
+}
