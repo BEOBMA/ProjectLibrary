@@ -174,8 +174,6 @@ class GameManager {
     private fun preparationGameText() {
         Bukkit.getScheduler().runTaskLater(ProjectLibrary.instance, {
             Bukkit.broadcastMessage("${ChatColor.BOLD}[!] 20초 뒤 무대를 시작합니다.")
-            Bukkit.broadcastMessage("${ChatColor.BOLD}[!] /pl info 명령어를 통해 자신의 핵심 책장 능력을 확인할 수 있습니다.")
-            Bukkit.broadcastMessage("${ChatColor.BOLD}[!] (이 무대가 첫 번째 무대라면 핵심 책장 능력이 존재하지 않습니다.)")
             Bukkit.getScheduler().runTaskLater(ProjectLibrary.instance, {
                 stageStart()
             }, 400L)
