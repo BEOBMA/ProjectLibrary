@@ -25,6 +25,30 @@ class TextManager {
     }
 
     /**
+     * @param msg 빨간색으로 강조할 메시지
+     * @return 빨간색으로 강조된 메시지를 반환 후, ChatColor 리셋
+     */
+    fun redMessagetoGray(msg: String): String {
+        return "${ChatColor.RED}${ChatColor.BOLD}${msg}${ChatColor.RESET}${ChatColor.GRAY}"
+    }
+
+    /**
+     * @param msg 짙은 빨간색으로 강조할 메시지
+     * @return 짙은 빨간색으로 강조된 메시지를 반환 후, ChatColor 리셋
+     */
+    fun darkRedMessagetoGray(msg: String): String {
+        return "${ChatColor.DARK_RED}${ChatColor.BOLD}${msg}${ChatColor.RESET}${ChatColor.GRAY}"
+    }
+
+    /**
+     * @param msg 짙은 초록색으로 강조할 메시지
+     * @return 짙은 초록색으로 강조된 메시지를 반환 후, ChatColor 리셋
+     */
+    fun darkGreenMessagetoGray(msg: String): String {
+        return "${ChatColor.DARK_GREEN}${ChatColor.BOLD}${msg}${ChatColor.RESET}${ChatColor.GRAY}"
+    }
+
+    /**
      * @return 일회성
      */
     fun oneTimeMessage(): String {
