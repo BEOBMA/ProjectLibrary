@@ -20,7 +20,7 @@ class OnDamageEvent : Listener {
             return
         }
 
-        event.damage -= damageHandle(player, entity)
+        event.damage += damageHandle(player, entity)
 
         var disheveledDamage = event.damage / 4
         val mainBookShelf = Info.game!!.playerMainBookShelf[entity] ?: return
