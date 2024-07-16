@@ -46,6 +46,7 @@ class GameManager {
             }
 
             /*
+            * 테스트 용도 주석 처리
             if (teams["RedTeam"]?.players?.isEmpty() == true) {
                 Bukkit.getServer().broadcastMessage("\n${ChatColor.YELLOW}상대 팀이 존재하지 않아 게임을 진행할 수 없습니다.")
                 Info.game!!.stop()
