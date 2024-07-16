@@ -214,6 +214,27 @@ class SetUp {
                     ), EmotionType.Negative, LibraryFloor.History, 2
                 ),
 
+
+                AbnormalityCard(
+                    "포자", listOf(
+                        "${ChatColor.GRAY}피격 시 공격자에게 ${textManager.redMessagetoGray("화상")} 1을 부여한다.",
+                        "${ChatColor.GRAY}피격 시 공격자에게 ${textManager.darkRedMessagetoGray("출혈")} 1을 부여한다.",
+                    ), EmotionType.Affirmation, LibraryFloor.History, 2
+                ),
+
+                AbnormalityCard(
+                    "일벌", listOf(
+                        "${ChatColor.GRAY}자신에게 피해를 입힌 대상에게 표적이 찍힌다."
+                        "${ChatColor.GRAY}해당 적을 아군이 공격할 때 피해량이 2 증가한다."
+                    ), EmotionType.Negative, LibraryFloor.History, 2
+                ),
+
+                AbnormalityCard(
+                    "충성심", listOf(
+                        "${ChatColor.GRAY}자신이 잃은 체력에 비례하여 모든 아군이 입히는 피해가 증가한다."
+                    ), EmotionType.Negative, LibraryFloor.History, 3
+                ),
+
             )
         )
     }
