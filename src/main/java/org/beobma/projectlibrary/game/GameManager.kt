@@ -45,6 +45,19 @@ class GameManager {
                 }
             }
 
+            /*
+            if (teams["RedTeam"]?.players?.isEmpty() == true) {
+                Bukkit.getServer().broadcastMessage("\n${ChatColor.YELLOW}상대 팀이 존재하지 않아 게임을 진행할 수 없습니다.")
+                Info.game!!.stop()
+                return@Runnable
+            } else if (teams["BlueTeam"]?.players?.isEmpty() == true) {
+                Bukkit.getServer().broadcastMessage("\n${ChatColor.YELLOW}상대 팀이 존재하지 않아 게임을 진행할 수 없습니다.")
+                Info.game!!.stop()
+                return@Runnable
+            }
+
+             */
+
             Bukkit.broadcastMessage("\n${ChatColor.YELLOW}팀 등록이 완료되었습니다.")
             broadcastTeamPlayers(teams["RedTeam"], "레드")
             broadcastTeamPlayers(teams["BlueTeam"], "블루")
