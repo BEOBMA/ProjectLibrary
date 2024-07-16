@@ -51,13 +51,13 @@ class OnDamageEvent : Listener {
         
         bookShelfList.forEach { abnormalityCard ->
             if (abnormalityCard.emotion == EmotionType.Affirmation) {
-                when ("${ChatColor.DARK_GREEN}${abnormalityCard.name}") {
+                when ("${ChatColor.DARK_GREEN}${ChatColor.BOLD}${abnormalityCard.name}") {
 
 
                 }
             }
             else {
-                when ("${ChatColor.DARK_RED}${abnormalityCard.name}") {
+                when ("${ChatColor.DARK_RED}${ChatColor.BOLD}${abnormalityCard.name}") {
 
 
                 }
