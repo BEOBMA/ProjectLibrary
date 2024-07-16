@@ -52,6 +52,15 @@ class Commando : Listener, CommandExecutor, TabCompleter {
                     commandManager.run { sender.gameStop() }
                     return true
                 }
+
+                "disheveled" -> {
+                    if (!sender.isOp) {
+                        sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 이 명령어를 사용할 권한이 없습니다.")
+                        return false
+                    }
+                    return true
+
+                }
                 
                 else -> {
                     sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 알 수 없는 명령어: ${args[0]}.")
