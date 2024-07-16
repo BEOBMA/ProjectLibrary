@@ -45,7 +45,24 @@ class OnDamageEvent : Listener {
     }
 
     private fun damageHandle(player: Player, entity: Player): Int {
-        val bookShelfList = player.getMainBookShelf()!!
+        val bookShelfList = player.getMainBookShelf()!!.abnormalityCards
+
+        if (boomShelfList.isEmpty()) return
+        
+        bookShelfList.forEach { abnormalityCard ->
+            if (abnormalityCard.emotion == EmotionType.Affirmation) {
+                when ("${ChatColor.DARK_GREEN}${abnormalityCard.name}") {
+
+
+                }
+            }
+            else {
+                when ("${ChatColor.DARK_RED}${abnormalityCard.name}") {
+
+
+                }
+            }
+        }
 
     }
     private fun updateEmotionOnDeath(player: Player, entity: Player) {
