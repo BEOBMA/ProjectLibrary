@@ -12,7 +12,6 @@ class OnDamageEvent : Listener {
     fun onPlayerAttack(event: EntityDamageByEntityEvent) {
         val player = event.damager as? Player ?: return
         val entity = event.entity as? Player ?: return
-        val damage = event.damage
 
         if (!Info.isGaming() && !Info.isStarting()) return
 
@@ -21,7 +20,20 @@ class OnDamageEvent : Listener {
             return
         }
 
-        handleDisheveledDamage(player, entity, damage.toInt())
+        event.damage -= damageHandle(player, entity)
+
+        var disheveledDamage = event.damage / 4
+        val mainBookShelf = Info.game!!.playerMainBookShelf[entity] ?: return
+
+        if (mainBookShelf.disheveled - disheveledDamage <= 0) {
+            if (AbnormalStatusManager().isDisheveled(player)) {
+                event.damage += disheveledDamage
+            } else {
+                mainBookShelf.disheveled(entity)
+            }
+        } else {
+            mainBookShelf.disheveled -= disheveledDamage
+        }
 
         if (entity.health - event.damage <= 0) {
             updateEmotionOnDeath(player, entity)
@@ -32,21 +44,10 @@ class OnDamageEvent : Listener {
         }
     }
 
-    private fun handleDisheveledDamage(player: Player, entity: Player, damage: Int) {
-        val disheveledDamage = damage / 4
-        val mainBookShelf = Info.game!!.playerMainBookShelf[entity] ?: return
+    private fun damageHandle(player: Player, entity: Player): Int {
+        val bookShelfList = player.getMainBookShelf()!!
 
-        if (mainBookShelf.disheveled - disheveledDamage <= 0) {
-            if (AbnormalStatusManager().isDisheveled(player)) {
-                player.damage += disheveledDamage
-            } else {
-                mainBookShelf.disheveled(entity)
-            }
-        } else {
-            mainBookShelf.disheveled -= disheveledDamage
-        }
     }
-
     private fun updateEmotionOnDeath(player: Player, entity: Player) {
         val playerBookShelf = Info.game!!.playerMainBookShelf[player] ?: return
         val entityBookShelf = Info.game!!.playerMainBookShelf[entity] ?: return
