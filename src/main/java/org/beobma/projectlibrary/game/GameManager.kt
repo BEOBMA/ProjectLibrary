@@ -29,6 +29,7 @@ class GameManager {
     }
 
     fun teamPick() {
+        ProjectLibrary.loggerInfo("[ProjectLibrary] team pick time")
         Info.game!!.players.forEach { player ->
             player.teleport(Location(Bukkit.getWorld("world"), -21.5, -47.0, 23.0, -90F, 0F))
             player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0F, 2.0F)
@@ -47,6 +48,7 @@ class GameManager {
             Bukkit.broadcastMessage("\n${ChatColor.YELLOW}팀 등록이 완료되었습니다.")
             broadcastTeamPlayers(teams["RedTeam"], "레드")
             broadcastTeamPlayers(teams["BlueTeam"], "블루")
+            ProjectLibrary.loggerInfo("[ProjectLibrary] team pick end")
 
             ProjectLibrary.instance.server.scheduler.runTaskLater(ProjectLibrary.instance, Runnable {
                 Bukkit.broadcastMessage("\n${ChatColor.YELLOW}잠시 후 게임이 시작됩니다.")
@@ -78,6 +80,7 @@ class GameManager {
         Info.game!!.players.forEach { player ->
             assistantLibrarianBookshelf.set(player)
         }
+        ProjectLibrary.loggerInfo("[ProjectLibrary] game reset end")
         preparationGame()
     }
 
@@ -120,6 +123,7 @@ class GameManager {
         }
         handleFloorChange()
         preparationGameText()
+        ProjectLibrary.loggerInfo("[ProjectLibrary] ${Info.game!!.floor} floor ${Info.game!!.act} act")
     }
 
     private fun handleFloorChange() {
@@ -184,15 +188,16 @@ class GameManager {
             player.sendTitle(
                 "${ChatColor.BOLD}막의 시작",
                 "${ChatColor.BOLD}Fight",
+                20,
                 40,
-                80,
-                40
+                20
             )
             AbnormalStatusManager().apply {
                 player.removeUnableMove()
                 player.removeUnableAttack()
             }
         }
+        ProjectLibrary.loggerInfo("[ProjectLibrary] act start")
     }
 
     private fun musicDisk() {
@@ -215,7 +220,7 @@ class GameManager {
     }
 
     private fun getSoundData(floor: LibraryFloor, act: Int): Pair<String, Long> {
-        return when (floor) {
+        val type = when (floor) {
             GeneralWorks -> when (act) {
                 1 -> "custom.music.keterbattle01_01" to 768L
                 2 -> "custom.music.keterbattle02_01" to 678L
@@ -278,6 +283,8 @@ class GameManager {
             }
             Kether -> "custom.music.geadeyeclaw_01" to 876L
         }
+        ProjectLibrary.loggerInfo("[ProjectLibrary] ${type.first} music play")
+        return type
     }
 
     fun actEndCheck() {
@@ -286,6 +293,7 @@ class GameManager {
 
         if (redTeamList.isNullOrEmpty() || blueTeamList.isNullOrEmpty()) {
             actEnd(if (redTeamList.isNullOrEmpty()) teams["RedTeam"] else teams["BlueTeam"])
+            ProjectLibrary.loggerInfo("[ProjectLibray] act end")
         }
     }
 
@@ -307,11 +315,14 @@ class GameManager {
         Bukkit.broadcastMessage("${ChatColor.BOLD}[!] 현재 점수:")
         Bukkit.broadcastMessage("${ChatColor.DARK_RED}${ChatColor.BOLD}[!] 레드팀 ${Info.game!!.redTeamScore}점")
         Bukkit.broadcastMessage("${ChatColor.DARK_BLUE}${ChatColor.BOLD}[!] 블루팀 ${Info.game!!.blueTeamScore}점")
+        ProjectLibrary.loggerInfo("[ProjectLibrary] ${Info.game!!.redTeamScore} red score")
+        ProjectLibrary.loggerInfo("[ProjectLibrary] ${Info.game!!.blueTeamScore} blue score")
         compensationCheck()
     }
 
     private fun compensationCheck() {
         if (Info.game!!.floor == Kether && Info.game!!.act == 3) {
+            ProjectLibrary.loggerInfo("[ProjectLibrary] compensation cancle")
             preparationGame()
             return
         }
@@ -320,6 +331,7 @@ class GameManager {
             Bukkit.broadcastMessage("${ChatColor.RED}${ChatColor.BOLD}[!] 보상 획득 창을 끄면 보상을 포기합니다.")
             Bukkit.getScheduler().runTaskLater(ProjectLibrary.instance, {
                 Info.game!!.players.forEach { player ->
+                           ProjectLibrary.loggerInfo("[ProjectLibrary] compensation ready")
                     player.abnormalityCardCompensation()
                 }
             }, 60L)
@@ -466,6 +478,7 @@ class GameManager {
             }
         }
         Bukkit.getScheduler().runTaskLater(ProjectLibrary.instance, {
+                   ProjectLibrary.loggerInfo("[ProjectLibrary] game end")
             Bukkit.broadcastMessage("${ChatColor.BOLD}[!] 모든 무대가 종료되었습니다.")
             Bukkit.broadcastMessage("${ChatColor.BOLD}[!] 현재 점수 계산중입니다...")
             Bukkit.getScheduler().runTaskLater(ProjectLibrary.instance, {
