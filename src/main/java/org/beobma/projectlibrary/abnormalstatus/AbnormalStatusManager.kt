@@ -126,4 +126,13 @@ class AbnormalStatusManager {
         if (!this.isParticipation()) return
         player.fireTick += duration * 20
     }
+
+    /**
+     * @param duration 지속시간.
+     * 플레이어에게 화상 부여함.
+     */
+    fun Player.getBurn(): Int {
+        if (!this.isParticipation()) return 0
+        return player.fireTick / 20
+    }
 }
