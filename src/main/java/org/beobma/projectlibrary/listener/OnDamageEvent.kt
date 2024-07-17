@@ -201,11 +201,11 @@ class OnDamageEvent : Listener {
                 }
             }
         }
-        .run {
-            val bleending = entity.getBleending()
+        AbnormalStatusManager().run {
+            val bleending = player.getBleending()
             if (bleending > 0) {
-                finalDamage += bleending
-                entity.removeBleending(bleending / 2)
+                playerBookShelf.paleDamage(bleending, player)
+                player.removeBleending(bleending / 2)
             }
         }
         return finalDamage
