@@ -199,6 +199,12 @@ class OnDamageEvent : Listener {
                 if (abnormalityCard.name == "죄책감") {
                     playerBookShelf.removeDisheveled((damage+finalDamage/2).toInt(), player)
                 }
+                if (abnormalityCard.name == "재") {
+                    AbnormalStatusManager().run {
+                        player.addBurn(1)
+                        player.addBleending
+                    }
+                }
             }
         }
         AbnormalStatusManager().run {
