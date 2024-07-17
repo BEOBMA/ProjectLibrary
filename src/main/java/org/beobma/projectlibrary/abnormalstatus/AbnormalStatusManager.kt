@@ -124,5 +124,6 @@ class AbnormalStatusManager {
      */
     fun Player.addBurn(duration: Int) {
         if (!this.isParticipation()) return
+        player.fireTick += duration * 20
     }
 }
