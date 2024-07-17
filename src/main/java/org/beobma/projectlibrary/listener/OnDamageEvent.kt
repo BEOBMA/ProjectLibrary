@@ -154,6 +154,18 @@ class OnDamageEvent : Listener {
                 if (abnormalityCard.name == "눈빛") {
                     finalDamage *= 2
                 }
+                if (abnormalityCard.name == "성냥불") {
+                   finalDamage +=player.scoreboard.getObjective("matchFireCount")!!.getScore(player.name).score / 2
+
+ player.scoreboard.getObjective("matchFireCount")!!.getScore(player.name).score++
+
+                    if (player.scoreboard.getObjective("matchFireCount")!!.getScore(player.name).score >= 4) {
+                        if (25.isTrueWithProbability()) {
+                            playerBookShelf.paleDamage(player.scoreboard.getObjective("matchFireCount")!!.getScore(player.name).score, player)
+                        }
+                    }
+                    Info.game!!.stageEndBukkitScheduler.add { player.scoreboard.getObjective("matchFireCount")!!.getScore(player.name).score = 0}
+                }
             }
         }
         if (entityBookShelfList.isNotEmpty()) {
