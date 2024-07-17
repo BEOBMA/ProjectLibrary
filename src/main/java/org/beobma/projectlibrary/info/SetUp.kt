@@ -174,7 +174,7 @@ class SetUp {
 
                 AbnormalityCard(
                     "그리웠던 옛날의 포옹", listOf(
-                        "${ChatColor.GRAY}적중 시 20% 확률로 5의 ${textManager.goldenMessagetoGray("흐트러짐")} 피해를 받는다.",
+                        "${ChatColor.GRAY}적중 시 20% 확률로 5의 ${textManager.goldenMessagetoGray("흐트러짐")} 피해를 입힌다.",
                         "${ChatColor.GRAY}동일한 대상을 공격할 때마다 확률이 증가한다.",
                     ), EmotionType.Affirmation, LibraryFloor.History, 1
                 ),
