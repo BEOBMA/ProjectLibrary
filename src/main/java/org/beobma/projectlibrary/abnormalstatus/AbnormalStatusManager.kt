@@ -141,9 +141,7 @@ class AbnormalStatusManager {
      */
     fun Player.addBleeding(power: Int) {
         if (!this.isParticipation()) return
-        entity.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score += power
-
-        
+        this.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score += power
     }
 
     /*
@@ -152,5 +150,18 @@ class AbnormalStatusManager {
     fun Player.getBleeding(): Int {
         if (!this.isParticipation()) return 0
         return entity.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score
+    }
+
+    /*
+     * @param power 제거할 위력
+     * 플레이어의 출혈을 제거함.
+     */
+    fun Player.removeBleeding(power: Int) {
+        if (!this.isParticipation()) return
+         entity.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score -= power
+
+        if ( entity.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score <= 0) {
+        entity.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score = 0
+        }
     }
 }
