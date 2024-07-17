@@ -32,7 +32,7 @@ class OnDamageEvent : Listener {
             }
         }
 
-        event.damage += damageHandle(player, entity, event.damage)
+        event.damage = damageHandle(player, entity, event.damage)
 
         if (event.damage <= 0) {
             event.isCancelled = true
@@ -40,7 +40,7 @@ class OnDamageEvent : Listener {
         }
 
         var disheveledDamage = event.damage / 4
-        disheveledDamage += disheveledDamageHandle(player, entity, disheveledDamage)
+        disheveledDamage = disheveledDamageHandle(player, entity, disheveledDamage)
 
         if (disheveledDamage <= 0) {
             return
@@ -73,7 +73,7 @@ class OnDamageEvent : Listener {
         val playerBookShelf = player.getMainBookShelf()!!
         val entityBookShelf = entity.getMainBookShelf()!!
         val game = Info.game ?: return 0.0
-        var finalDamage = 0.0
+        var finalDamage = 0.0 + damage
 
         if (playerBookShelfList.isNotEmpty()) {
             playerBookShelfList.forEach { abnormalityCard ->
@@ -93,11 +93,11 @@ class OnDamageEvent : Listener {
                     }
                 }
                 if (abnormalityCard.name == "고동") {
-                    finalDamage += damage.percentageOf(20)
+                    finalDamage += finalDamage.percentageOf(20)
                     player.scoreboard.getObjective("beatingCounter")!!.getScore(player.name).score = 0
                 }
                 if (abnormalityCard.name == "몰아치는 박동") {
-                    finalDamage += damage.percentageOf(20)
+                    finalDamage += finalDamage.percentageOf(20)
                 }
                 if (abnormalityCard.name == "학습") {
                     finalDamage += game.act
@@ -177,11 +177,11 @@ class OnDamageEvent : Listener {
                 if (abnormalityCard.name == "흉터") {
                     finalDamage -= 1
                     if (10.isTrueWithProbability()) {
-                        finalDamage -= 9999
+                        finalDamage -= 99999
                     }
                 }
                 if (abnormalityCard.name == "몰아치는 박동") {
-                    finalDamage -= damage.percentageOf(20)
+                    finalDamage -= finalDamage.percentageOf(20)
                 }
 
                 if (abnormalityCard.name == "서리조각") {
@@ -209,7 +209,7 @@ class OnDamageEvent : Listener {
                     finalDamage *= 2
                 }
                 if (abnormalityCard.name == "죄책감") {
-                    playerBookShelf.removeDisheveled((damage+finalDamage/2).toInt(), player)
+                    playerBookShelf.removeDisheveled((finalDamage/2).toInt(), player)
                 }
                 if (abnormalityCard.name == "재") {
                     AbnormalStatusManager().run {
@@ -240,7 +240,7 @@ class OnDamageEvent : Listener {
         val playerBookShelf = player.getMainBookShelf()!!
         val entityBookShelf = entity.getMainBookShelf()!!
         val game = Info.game ?: return 0.0
-        var finalDamage = 0.0
+        var finalDamage = 0.0 + damage
 
         if (playerBookShelfList.isNotEmpty()) {
             playerBookShelfList.forEach { abnormalityCard ->
