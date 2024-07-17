@@ -201,6 +201,13 @@ class OnDamageEvent : Listener {
                 }
             }
         }
+        .run {
+            val bleending = entity.getBleending()
+            if (bleending > 0) {
+                finalDamage += bleending
+                entity.removeBleending(bleending / 2)
+            }
+        }
         return finalDamage
     }
 
