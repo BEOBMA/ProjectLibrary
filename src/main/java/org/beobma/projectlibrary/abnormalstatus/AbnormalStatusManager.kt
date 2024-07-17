@@ -127,12 +127,30 @@ class AbnormalStatusManager {
         player.fireTick += duration * 20
     }
 
-    /**
-     * @param duration 지속시간.
-     * 플레이어에게 화상 부여함.
+    /*
+     * 플레이어의 화상을 반환함
      */
     fun Player.getBurn(): Int {
         if (!this.isParticipation()) return 0
         return player.fireTick / 20
+    }
+
+    /**
+     * @param power 부여할 위력
+     * 플레이어에게 출혈을 부여함.
+     */
+    fun Player.addBleeding(power: Int) {
+        if (!this.isParticipation()) return
+        entity.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score += power
+
+        
+    }
+
+    /*
+     * 플레이어의 출혈을 반환함.
+     */
+    fun Player.getBleeding(): Int {
+        if (!this.isParticipation()) return 0
+        return entity.scoreboard.getObjective("bleeding")!!.getScore(entity.name).score
     }
 }
