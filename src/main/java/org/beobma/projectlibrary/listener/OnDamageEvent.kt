@@ -201,8 +201,7 @@ class OnDamageEvent : Listener {
                 }
                 if (abnormalityCard.name == "재") {
                     AbnormalStatusManager().run {
-                        player.addBurn(1)
-                        player.addBleending
+                        player.addBurn(2)
                     }
                 }
             }
