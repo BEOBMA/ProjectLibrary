@@ -166,7 +166,7 @@ class SetUp {
                 AbnormalityCard(
                     "성냥불", listOf(
                         "${ChatColor.GRAY}적중 시 자신에게 ${textManager.redMessagetoGray("불씨")}를 부여한다.",
-                        "${ChatColor.GRAY}적중 시 불씨 만큼 추가 피해를 입힌다.",
+                        "${ChatColor.GRAY}적중 시 ${textManager.redMessagetoGray("불씨")}의 절반 만큼 추가 피해를 입힌다.",
                         "${ChatColor.GRAY}불씨가 4 이상이면 25% 확률로 자신은 불씨 만큼의 피해를 입는다."
                     ), EmotionType.Negative, LibraryFloor.History, 1
                 ),
