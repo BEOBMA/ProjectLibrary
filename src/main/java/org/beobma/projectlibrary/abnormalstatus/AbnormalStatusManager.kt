@@ -117,4 +117,12 @@ class AbnormalStatusManager {
         this.removeUnableMove()
         this.removeUnableAttack()
     }
+
+    /**
+     * @param duration 지속시간.
+     * 플레이어에게 화상 부여함.
+     */
+    fun Player.addBurn(duration: Int) {
+        if (!this.isParticipation()) return
+    }
 }
