@@ -204,6 +204,12 @@ class OnDamageEvent : Listener {
                         player.addBurn(2)
                     }
                 }
+                if (abnormalityCard.name == "발걸음") {
+                    if (entity.health <= entity.maxHealth.percentageOf(20)){
+                        playerBookShelf.paleDamage(entity.maxHealth.percentageOf(30), player)
+                        entityBookShelf.death(entity)
+                    }
+                }
             }
         }
         AbnormalStatusManager().run {
