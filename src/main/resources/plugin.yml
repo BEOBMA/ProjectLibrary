@@ -1,9 +1,0 @@
-name: ProjectLibrary
-version: '${version}'
-main: org.beobma.projectlibrary.ProjectLibrary
-api-version: '1.21'
-
-commands:
-  pl:
-    description: ProjectLivrary 메인 명령어
-    aliases: [ ProjectLibrary ]
