@@ -1,0 +1,9 @@
+name: ProjectLibrary
+version: '${version}'
+main: org.beobma.projectlibrary.ProjectLibrary
+api-version: '1.21'
+
+commands:
+  lor:
+    description: ProjectLibrary 메인 명령어
+    aliases: [ libraryofruina ]
